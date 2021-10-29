@@ -1,0 +1,27 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: sudo apt update && sudo apt upgrade -y && sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 asciidoc libnss3 xsltproc php libleptonica-dev libxss1 libasound2 libxtst6 xauth xvfb libpango1.0-dev pandoc make cmake mc -u -m -y 
+    - name: Cmake
+      run: cmake .
+    - name: make 
+      run: make 
+    - name: make install
+      run: sudo make install
+    - name: cybercache
+      run: cybercache
+    - name: test
+      run: cd tests && make && ./start-console && test gettags
